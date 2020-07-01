@@ -1,0 +1,58 @@
+// In diameter of tree we need left height,right height and left diameter , right diameter on each and every node 
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int d(TreeNode * root,int *h){
+        int ld=0;
+        int rd=0;
+        int lh=0;
+        int rh=0;
+        if(!root){
+            *h=0;
+            return 0;
+        }
+        ld=d(root->left,&lh);
+        rd=d(root->right,&rh);
+        *h=max(lh,rh)+1;
+        return max(lh+rh+1,max(ld,rd));
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        if(!root || (root->left==NULL && root->right==NULL)){
+            return 0;
+        }
+        int h=0;
+        return d(root,&h)-1;
+    }
+};
+
+
+
+
+class Solution {
+public:
+    int dia(TreeNode* root,int &ans){
+        if(!root){
+            return 0;
+        }
+        int lh=dia(root->left,ans);
+        int rh=dia(root->right,ans);
+        ans=max(ans,1+lh+rh);
+        return max(lh,rh)+1;
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        if(!root)
+            return 0;
+        int ans=0;
+        int height=dia(root,ans);
+        return ans-1;
+    }
+};
